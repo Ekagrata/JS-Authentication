@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Register</title>  <!-- CORE CSS-->		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+			}
+			html {
+				display: table;
+				margin: auto;
+			}
+			body {
+				display: table-cell;
+				vertical-align: middle;
+			}
+			.margin {
+			margin: 0 !important;
+			}
+		</style>
+
+		<meta charset="UTF-8">
+		 <!-- Firebase Package-->
+		 <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
+	
+		 <!-- Loads the login UI elements-->
+		 <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+		 <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+	 
+	  
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Signin</title>
+
+	</head>
+	
+	<body class="green">
+		<h1 style="text-align: center;" >Sign in with Google Example </h1>
+		<div id="firebaseui-auth-container">
+	
+		</div>
+	<div id="login-page" class="row">
+		<form class="splash-container" action="/login" method="POST">
+		<div class="col s12 z-depth-6 card-panel">
+			<div class="login-form login-div">
+				<div class="row">
+					<div class="input-field col s12 center">
+						<p class="center  login-form-text" style="font-weight: 800;">LOGIN INTO YOUR ACCOUNT</p>
+					</div>
+				</div>
+				<div class="row margin">
+					<div class="input-field col s12">
+						<i class="mdi-communication-email prefix" style="color: green;"></i>
+						<input id="email_field" name="email" type="email" class="validate">
+					</div>
+				</div>
+				<div class="row margin">
+					<div class="input-field col s12">
+						<i class="mdi-action-lock-outline prefix" style="color: green;"></i>
+						<input id="password_field" name="password" type="password" class="validate">
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<button class="btn waves-effect green waves-light col s12" id="register" type="submit"> Login to account</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		</div>
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+        <script>
+            // Initialize Firebase
+            var config = {
+		apiKey: "AIzaSyCot_E1fN8PxtN99o0pomZ2Bb8mOADsdn8",
+		authDomain: "fir-app-test-2b991.firebaseapp.com",
+		projectId: "fir-app-test-2b991",
+		storageBucket: "fir-app-test-2b991.appspot.com",
+		messagingSenderId: "783859737357",
+		appId: "1:783859737357:web:becaba1ca9b73ba3d14644"
+		};
+            firebase.initializeApp(config);
+
+			function login(){
+				var userEmail = document.getElementById("email_field").value;
+				var userPass = document.getElementById("password_field").value;  
+				firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
+					// Handle Errors here.
+					var errorCode = error.code;
+					var errorMessage = error.message;    
+					window.alert("Error : " + errorMessage);
+				}).then(() => {
+                	window.location.assign("/profile");
+              	});
+			}
+
+		var config = {
+			apiKey: "AIzaSyCot_E1fN8PxtN99o0pomZ2Bb8mOADsdn8",
+	  authDomain: "fir-app-test-2b991.firebaseapp.com",
+	  projectId: "fir-app-test-2b991",
+	  storageBucket: "fir-app-test-2b991.appspot.com",
+	  messagingSenderId: "783859737357",
+	  appId: "1:783859737357:web:becaba1ca9b73ba3d14644"
+	  };
+	//   firebase.initializeApp(config);
+	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+	
+	// FirebaseUI config.
+	var uiConfig = {
+		signInOptions: [
+			// google sign in option
+			firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+		],
+	
+		// Terms of service url/callback.
+		tosUrl: '<your-tos-url>',
+		// Privacy policy url/callback.
+		privacyPolicyUrl: function() {
+			window.location.assign('<your-privacy-policy-url>');
+		},
+	
+		callbacks: {
+			signInSuccess: function(user, credential, redirectUrl) {
+				// User successfully signed in.
+	
+				user.getIdToken().then(function(idToken) {
+					// document.cookie = "__session=idToken"
+					window.location.href = '/savecookie?idToken=' + idToken;
+				}).catch(error => {
+					console.log(error);
+				}) ;
+	
+			}
+		}
+	};
+	// Initialize the FirebaseUI Widget using Firebase.
+	var ui = new firebaseui.auth.AuthUI(firebase.auth());
+	
+	// The start method will wait until the DOM is loaded.
+	ui.start('#firebaseui-auth-container', uiConfig);
+	</script>
+	</body>
+</html>

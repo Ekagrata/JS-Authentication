@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Register</title>  <!-- CORE CSS-->	
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">		
+        <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+			}
+			html {
+				display: table;
+				margin: auto;
+			}
+			body {
+				display: table-cell;
+				vertical-align: middle;
+			}
+			.margin {
+			margin: 0 !important;
+			}
+		</style>
+	
+	</head>	
+	<body class="green">
+	<div id="login-page" class="row">
+        <div class="col s12 z-depth-6 card-panel">
+            <div class="login-form login-div">
+                <div class="row">
+                    <div class="input-field col s12 center">
+                        <p class="center login-form-text" style="font-weight: 800; color: rgb(90, 128, 0);">WELCOME TO YOUR ACCOUNT</p>
+                    </div>
+                </div>
+                <div class="row margin">
+                    <div class="input-field col s12"style="font-weight: 800; color: rgb(90, 128, 0);" id="wrapper">
+                        
+                    </div>
+                </div> <br><br>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <button class="btn waves-effect green waves-light col s12" id="verify" onclick="sendVerificationEmail()">Request Verification Link</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <button class="btn waves-effect green waves-light col s12" id="register" onclick="logout()">Log out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+        <script>
+            // Initialize Firebase
+            var config = {
+		apiKey: "AIzaSyCot_E1fN8PxtN99o0pomZ2Bb8mOADsdn8",
+		authDomain: "fir-app-test-2b991.firebaseapp.com",
+		projectId: "fir-app-test-2b991",
+		storageBucket: "fir-app-test-2b991.appspot.com",
+		messagingSenderId: "783859737357",
+		appId: "1:783859737357:web:becaba1ca9b73ba3d14644"
+		};
+
+            firebase.initializeApp(config); 
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    var emailVerified = user.emailVerified;
+                    var email = user.email;
+                    var data =  '<h4> Hello, ' + email + '</h4>' +
+                                '<h4>Account verified: ' + emailVerified + '</h1>';
+                    document.getElementById("wrapper").innerHTML = data
+                    if(emailVerified == true){
+                        document.getElementById("verify").style.display = "none"
+                    }
+
+                console.log(user)
+                } else {
+                console.log("No one here")
+                }
+            }); 
+            const user = firebase.auth().currentUser;   
+            console.log("logging firebase auth ",firebase.auth())
+            
+            function sendVerificationEmail(){
+                var user = firebase.auth().currentUser;
+                console.log("inside sendverification ",user)
+                window.location.assign("/verify-email");
+
+                // user.sendEmailVerification().then(function() {
+                //     window.alert("Verification link sent to your email. Kinldy check to verify your account")
+                // }).catch(function(error) {
+                // // An error happened.
+                // console.log(error)
+                // });                
+            }  
+           
+            function logout(){
+                firebase.auth().signOut().then(() => {
+					window.location.assign("/login");
+				});
+            }     
+        </script>
+    <script src="main.js"></script>
+	</body>
+</html>
